@@ -10,10 +10,10 @@ void UOverlayWidgetController::BroadcastInitialValues()
 {
 	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
 	
-	OnHealthChange.Broadcast(AuraAttributeSet->GetHealth());
-	OnMaxHealthChange.Broadcast(AuraAttributeSet->GetMaxHealth());
-	OnManaChange.Broadcast(AuraAttributeSet->GetMana());
-	OnMaxManaChange.Broadcast(AuraAttributeSet->GetMaxMana());
+	OnHealthChanged.Broadcast(AuraAttributeSet->GetHealth());
+	OnMaxHealthChanged.Broadcast(AuraAttributeSet->GetMaxHealth());
+	OnManaChanged.Broadcast(AuraAttributeSet->GetMana());
+	OnMaxManaChanged.Broadcast(AuraAttributeSet->GetMaxMana());
 
 }
 
@@ -36,12 +36,15 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		{
 			for(const FGameplayTag& Tag : AssetTags)
 			{
-				const FString Msg = FString::Printf(TEXT("GE Tag: %s"), *Tag.ToString());
-				GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Blue, Msg);
-
-				// Get Row in DataTable and Broadcast to Widget
-				FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
-				
+				// For example, say that Tag = Message.HealthPotion
+				// "Message.HealthPotion".MatchesTag("Message") will return True, "Message".MatchesTag("Message.HealthPotion") will return False
+				FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
+				if(Tag.MatchesTag(MessageTag))
+				{
+					// Get Row in DataTable and Broadcast to Widget
+					const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+					MessageWidgetRowDelegate.Broadcast(*Row);	
+				}
 			}
 		}
 	);
@@ -49,20 +52,20 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 
 void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data) const
 {
-	OnHealthChange.Broadcast(Data.NewValue);
+	OnHealthChanged.Broadcast(Data.NewValue);
 }
 
 void UOverlayWidgetController::MaxHealthChanged(const FOnAttributeChangeData& Data) const
 {
-	OnMaxHealthChange.Broadcast(Data.NewValue);
+	OnMaxHealthChanged.Broadcast(Data.NewValue);
 }
 
 void UOverlayWidgetController::ManaChanged(const FOnAttributeChangeData& Data) const
 {
-	OnManaChange.Broadcast(Data.NewValue);
+	OnManaChanged.Broadcast(Data.NewValue);
 }
 
 void UOverlayWidgetController::MaxManaChanged(const FOnAttributeChangeData& Data) const
 {
-	OnMaxManaChange.Broadcast(Data.NewValue);
+	OnMaxManaChanged.Broadcast(Data.NewValue);
 }
