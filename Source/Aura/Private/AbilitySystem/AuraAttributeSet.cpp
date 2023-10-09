@@ -31,6 +31,9 @@ void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 {
 	// recommend use for clamping
 	// check when any of our attributes change
+	// PreAttributeChange get NewValue from GE's modifier
+	// And fix value before change
+	// So, in below code, change value only returned modifier query
 	Super::PreAttributeChange(Attribute, NewValue);
 
 	if(Attribute == GetHealthAttribute())
@@ -90,7 +93,15 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	FEffectProperties Props;
 	SetEffectProperties(Data, Props);
 
-	
+	if(Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+	}
+
+	if(Data.EvaluatedData.Attribute == GetManaAttribute())
+	{
+		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
+	}
 }
 
 void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
