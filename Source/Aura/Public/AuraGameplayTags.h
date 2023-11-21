@@ -33,7 +33,7 @@ public:
 	FGameplayTag Attribute_Secondary_MaxMana;
 
 	FGameplayTag Attribute_Resistance_Fire;
-	FGameplayTag Attribute_Resistance_Lighting;
+	FGameplayTag Attribute_Resistance_Lightning;
 	FGameplayTag Attribute_Resistance_Arcane;
 	FGameplayTag Attribute_Resistance_Physical;
 
@@ -46,7 +46,7 @@ public:
 
 	FGameplayTag Damage;
 	FGameplayTag Damage_Fire;
-	FGameplayTag Damage_Lighting;
+	FGameplayTag Damage_Lightning;
 	FGameplayTag Damage_Arcane;
 	FGameplayTag Damage_Physical;
 	
