@@ -20,7 +20,7 @@ public:
 	AAuraProjectile();
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
+	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 
 	UPROPERTY(BlueprintReadWrite, meta=(ExposeOnSpawn=true))
 	FGameplayEffectSpecHandle DamageEffectSpecHandle;

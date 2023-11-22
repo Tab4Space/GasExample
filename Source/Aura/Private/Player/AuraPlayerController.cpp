@@ -31,7 +31,7 @@ void AAuraPlayerController::Tick(float DeltaSeconds)
 
 void AAuraPlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter, bool bBlockedHit, bool bCriticalHit)
 {
-	if(IsValid(TargetCharacter) && DamageTextComponentClass)
+	if(IsValid(TargetCharacter) && DamageTextComponentClass && IsLocalController())
 	{
 		// 생성자가 아닌 동적으로 생성하므로 수동으로 컴포넌트를 등록
 		UDamageTextComponent* DamageText = NewObject<UDamageTextComponent>(TargetCharacter, DamageTextComponentClass);
