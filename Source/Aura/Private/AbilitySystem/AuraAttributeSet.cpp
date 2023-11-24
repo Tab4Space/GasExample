@@ -190,9 +190,17 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage, bool bBlockedHit, bool bCriticalHit) const
 {
 	// show damage text
+	// Source Character: Causing Damage
+	// Target Character: Hit Damage
 	if(Props.SourceCharacter != Props.TargetCharacter)
 	{
 		if(AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.SourceCharacter->Controller))
+		{
+			PC->ShowDamageNumber(Damage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
+			return;
+		}
+		
+		if(AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.TargetCharacter->Controller))
 		{
 			PC->ShowDamageNumber(Damage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
 		}
