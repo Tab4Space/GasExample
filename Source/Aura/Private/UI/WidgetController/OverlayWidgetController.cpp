@@ -50,25 +50,50 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		}
 	);
 
-	// lambda don't know overlay widget controller
-	// lambda just know global or parameter
-	// so need lambda capture
-	// if we want to access member variable from some class, variable must be capture   
-	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
-		[this](const FGameplayTagContainer& AssetTags)
+	if(UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		if(AuraASC->bStartupAbilitiesGiven)
 		{
-			for(const FGameplayTag& Tag : AssetTags)
+			OnInitailizeStartupAbilities(AuraASC);
+		}
+		else
+		{
+			AuraASC->AbilitiesGivenDelegate.AddUObject(this, &UOverlayWidgetController::OnInitailizeStartupAbilities);
+		}
+		
+		// lambda don't know overlay widget controller
+		// lambda just know global or parameter
+		// so need lambda capture
+		// if we want to access member variable from some class, variable must be capture   
+		AuraASC->EffectAssetTags.AddLambda(
+			[this](const FGameplayTagContainer& AssetTags)
 			{
-				// For example, say that Tag = Message.HealthPotion
-				// "Message.HealthPotion".MatchesTag("Message") will return True, "Message".MatchesTag("Message.HealthPotion") will return False
-				FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
-				if(Tag.MatchesTag(MessageTag))
+				for(const FGameplayTag& Tag : AssetTags)
 				{
-					// Get Row in DataTable and Broadcast to Widget
-					const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
-					MessageWidgetRowDelegate.Broadcast(*Row);	
+					// For example, say that Tag = Message.HealthPotion
+					// "Message.HealthPotion".MatchesTag("Message") will return True, "Message".MatchesTag("Message.HealthPotion") will return False
+					FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
+					if(Tag.MatchesTag(MessageTag))
+					{
+						// Get Row in DataTable and Broadcast to Widget
+						const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+						MessageWidgetRowDelegate.Broadcast(*Row);	
+					}
 				}
 			}
-		}
-	);
+		);
+	}
+
+	
+}
+
+void UOverlayWidgetController::OnInitailizeStartupAbilities(UAuraAbilitySystemComponent* AuraAbilitySystemComponent)
+{
+	// TODO: Get information about all given abilities, look up their ability info, and broadcast it to widget.
+	if(!AuraAbilitySystemComponent->bStartupAbilitiesGiven)
+	{
+		return;
+	}
+
+	
 }
