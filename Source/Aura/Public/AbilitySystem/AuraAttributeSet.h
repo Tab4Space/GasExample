@@ -48,7 +48,7 @@ struct FEffectProperties
 };
 
 // typedef is specific to the FGameplayAttribute() signature, but TStaticFuncPtr is generic to any signature
-// typedef TBaseStaticDelegateInstance<FGAmeplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr FAttributeFuncPtr;
+// typedef TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr FAttributeFuncPtr;
 template<class T>
 using TStaticFuncPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
 
@@ -237,4 +237,5 @@ public:
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
 	void ShowFloatingText(const FEffectProperties& Props, float Damage, bool bBlockedHit, bool bCriticalHit) const;
+	void SendXPEvent(const FEffectProperties& Props);
 };
