@@ -68,6 +68,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Damage_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage.Physical"),
 		FString("Physical Damage Type"));
 	
+	
 	/* Damage Resistance */
 	GameplayTags.Attribute_Resistance_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Resistance.Fire"),
 		FString("Resistance to Fire Damage"));
@@ -77,6 +78,10 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Resistance to Arcane Damage"));
 	GameplayTags.Attribute_Resistance_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Resistance.Physical"),
 		FString("Resistance to Physical Damage"));
+
+	/* Meta Attributes */
+	GameplayTags.Attribute_Meta_IncomingXP = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Meta.IncomingXP"),
+		FString("InComing XP Meta Attribute"));
 
 	/* Map of Damage Types to Resistance */
 	GameplayTags.DamageTypesToResistance.Add(GameplayTags.Damage_Fire, GameplayTags.Attribute_Resistance_Fire);
