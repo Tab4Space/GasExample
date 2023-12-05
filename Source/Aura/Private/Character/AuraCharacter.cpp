@@ -10,6 +10,7 @@
 #include "Player/AuraPlayerController.h"
 #include "Player/AuraPlayerState.h"
 #include "NiagaraComponent.h"
+#include "Aura/AuraLogChannels.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "UI/HUD/AuraHUD.h"
@@ -60,14 +61,14 @@ void AAuraCharacter::OnRep_PlayerState()
 
 int32 AAuraCharacter::FindLevelForXP_Implementation(int32 InXP) const
 {
-	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
 	return AuraPlayerState->LevelUpInfo->FindLevelForXP(InXP);
 }
 
 int32 AAuraCharacter::GetXP_Implementation() const
 {
-	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
 	return AuraPlayerState->GetXP();
 }
@@ -81,17 +82,16 @@ void AAuraCharacter::AddToXP_Implementation(int32 InXP)
 
 void AAuraCharacter::LevelUp_Implementation()
 {
-	MulticastLevelUpParticles_Implementation();
-	
+	MulticastLevelUpParticles();
 }
 
 void AAuraCharacter::MulticastLevelUpParticles_Implementation() const
 {
-	if(IsValid(LevelUpNiagaraComponent))
+	if (IsValid(LevelUpNiagaraComponent))
 	{
 		const FVector CameraLocation = TopDownCameraComponent->GetComponentLocation();
 		const FVector NiagaraSystemLocation = LevelUpNiagaraComponent->GetComponentLocation();
-		const FRotator ToCameraRotation = (CameraLocation-NiagaraSystemLocation).Rotation();
+		const FRotator ToCameraRotation = (CameraLocation - NiagaraSystemLocation).Rotation();
 		LevelUpNiagaraComponent->SetWorldRotation(ToCameraRotation);
 		LevelUpNiagaraComponent->Activate(true);
 	}
@@ -99,14 +99,14 @@ void AAuraCharacter::MulticastLevelUpParticles_Implementation() const
 
 int32 AAuraCharacter::GetAttributePointsReward_Implementation(int32 Level) const
 {
-	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
 	return AuraPlayerState->LevelUpInfo->LevelUpInformation[Level].AttributePointAward;
 }
 
 int32 AAuraCharacter::GetSpellPointsReward_Implementation(int32 Level) const
 {
-	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
 	return AuraPlayerState->LevelUpInfo->LevelUpInformation[Level].SpellPointAward;
 }

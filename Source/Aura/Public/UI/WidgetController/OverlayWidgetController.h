@@ -6,7 +6,6 @@
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
-struct FAuraAbilityInfo;
 class UAuraAbilitySystemComponent;
 class UAbilityInfo;
 class UAuraUserWidget;
@@ -79,7 +78,7 @@ protected:
 
 	void OnInitailizeStartupAbilities(UAuraAbilitySystemComponent* AuraAbilitySystemComponent);
 
-	void OnXPChanged(int32 NewXP);
+	void OnXPChanged(int32 NewXP) const;
 };
 
 template <typename T>
