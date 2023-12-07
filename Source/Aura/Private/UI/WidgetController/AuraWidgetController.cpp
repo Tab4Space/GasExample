@@ -27,7 +27,7 @@ void UAuraWidgetController::BindCallbacksToDependencies()
 
 void UAuraWidgetController::BroadcastAbilityInfo()
 {
-	if(!AuraAbilitySystemComponent->bStartupAbilitiesGiven)
+	if(!GetAuraASC()->bStartupAbilitiesGiven)
 	{
 		return;
 	}
