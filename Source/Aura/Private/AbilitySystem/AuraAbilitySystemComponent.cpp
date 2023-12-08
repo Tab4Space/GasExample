@@ -180,6 +180,7 @@ void UAuraAbilitySystemComponent::ServerUpgradeAttribute_Implementation(const FG
 
 void UAuraAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
 {
+	// Only server
 	UAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
 	for(const FAuraAbilityInfo& Info : AbilityInfo->AbilityInformation)
 	{
@@ -188,7 +189,7 @@ void UAuraAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
 			continue;
 		}
 		
-		if(Level >= Info.LevelRequirement)
+		if(Level < Info.LevelRequirement)
 		{
 			continue;
 		}
@@ -200,6 +201,9 @@ void UAuraAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
 			GiveAbility(AbilitySpec);
 			// force update(replicate) ability spec.  
 			MarkAbilitySpecDirty(AbilitySpec);
+
+			// if handle human, broadcast on server and client
+			ClientUpdateAbilityStatus(Info.AbilityTag, FAuraGameplayTags::Get().Abilities_Status_Eligible);
 		}
 	}
 }
@@ -213,6 +217,11 @@ void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()
 		bStartupAbilitiesGiven = true;
 		AbilitiesGivenDelegate.Broadcast();
 	}
+}
+
+void UAuraAbilitySystemComponent::ClientUpdateAbilityStatus_Implementation(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
+{
+	AbilityStatusChanged.Broadcast(AbilityTag, StatusTag);
 }
 
 void UAuraAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec,
