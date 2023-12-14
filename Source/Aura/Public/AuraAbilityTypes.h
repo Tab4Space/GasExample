@@ -55,10 +55,10 @@ public:
 
 	bool IsCriticalHit() const { return bIsCriticalHit; }
 	bool IsBlockedHit() const { return bIsBlockedHit; }
-	bool IsSuccessfulDebuff() const { bIsSuccessfulDebuff; }
-	float GetDebuffDamage() const { DebuffDamage; }
-	float GetDebuffDuration() const { DebuffDuration; }
-	float GetDebuffFrequency() const { DebuffFrequency; }
+	bool IsSuccessfulDebuff() const { return bIsSuccessfulDebuff; }
+	float GetDebuffDamage() const { return DebuffDamage; }
+	float GetDebuffDuration() const { return DebuffDuration; }
+	float GetDebuffFrequency() const { return DebuffFrequency; }
 	TSharedPtr<FGameplayTag> GetDamageType() const { return DamageType; }
 
 	void SetIsCriticalHit(bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit; }
