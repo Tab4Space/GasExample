@@ -12,6 +12,7 @@
 #include "Input/AuraInputComponent.h"
 #include "Interaction/EnemyInterface.h"
 #include "NavigationSystem.h"
+#include "NiagaraFunctionLibrary.h"
 #include "GameFramework/Character.h"
 #include "UI/Widget/DamageTextComponent.h"
 
@@ -127,20 +128,19 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 					// DrawDebugSphere(GetWorld(), PointLoc, 8.f, 8, FColor::Green, false, 5.f);
 				}
 
-				/*
 				if(NavPath->PathPoints.Num() > 0)
 				{
 					CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
 					bAutoRunning = true;
 				}
-				*/
 
-				if(NavPath->PathPoints.Num() > 0)
+				/*if(NavPath->PathPoints.Num() > 0)
 				{
 					CachedDestination = NavPath->PathPoints.Last();
 					bAutoRunning = true;
-				}
-			} 
+				}*/
+			}
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
 		}
 		FollowTime = 0.f;
 		bTargeting = false;
