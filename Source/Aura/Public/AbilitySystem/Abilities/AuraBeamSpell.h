@@ -27,6 +27,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StoreAdditionalTarget(TArray<AActor*> &OutAdditionalTarget);
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void PrimaryTargetDied(AActor* DeadActor);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void AdditionalTargetDied(AActor* DeadActor);
+
 protected:
 	UPROPERTY(BlueprintReadWrite, Category="Beam")
 	FVector MouseHitLocation;
