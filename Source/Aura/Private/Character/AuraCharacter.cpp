@@ -11,6 +11,7 @@
 #include "Player/AuraPlayerController.h"
 #include "Player/AuraPlayerState.h"
 #include "NiagaraComponent.h"
+#include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Aura/AuraLogChannels.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -172,14 +173,28 @@ void AAuraCharacter::OnRep_Stunned()
 		if(bIsStunned)
 		{
 			AuraASC->AddLooseGameplayTags(BlockedTags);
+			StunDebuffComponent->Activate();
 			
 		}
 		else
 		{
 			AuraASC->RemoveLooseGameplayTags(BlockedTags);
+			StunDebuffComponent->Deactivate();
 		}
 	}
 	
+}
+
+void AAuraCharacter::OnRep_Burned()
+{
+	if(bIsBurned)
+	{
+		BurnDebuffComponent->Activate();
+	}
+	else
+	{
+		BurnDebuffComponent->Deactivate();
+	}
 }
 
 void AAuraCharacter::InitAbilityActorInfo()
