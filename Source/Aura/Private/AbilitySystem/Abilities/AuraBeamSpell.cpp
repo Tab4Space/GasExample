@@ -70,7 +70,6 @@ void UAuraBeamSpell::StoreAdditionalTarget(TArray<AActor*>& OutAdditionalTarget)
 	UAuraAbilitySystemLibrary::GetLivePlayersWithinRadius(GetAvatarActorFromActorInfo(), OverlappingActors, ActorsToIgnore, 850.f, MouseHitActor->GetActorLocation());
 
 	int32 NumAdditionalTargets = FMath::Min(GetAbilityLevel() - 1, MaxNumShockTargets);
-	// int32 NumAdditionalTargets = 5;
 
 	UAuraAbilitySystemLibrary::GetClosestTarget(NumAdditionalTargets, OverlappingActors, OutAdditionalTarget, MouseHitActor->GetActorLocation());
 
