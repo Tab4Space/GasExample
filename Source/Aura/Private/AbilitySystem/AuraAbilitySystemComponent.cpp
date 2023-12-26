@@ -58,7 +58,7 @@ void UAuraAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inp
 		{
 			AbilitySpecInputPressed(AbilitySpec);
 			// if not activate, activate ability
-			if(!AbilitySpec.IsActive())
+			if(AbilitySpec.IsActive())
 			{
 				InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed, AbilitySpec.Handle, AbilitySpec.ActivationInfo.GetActivationPredictionKey());
 			}
