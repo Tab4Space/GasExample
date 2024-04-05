@@ -49,6 +49,28 @@ void AAuraGameModeBase::DeleteSlot(const FString& SlotName, int32 SlotIndex)
 	}
 }
 
+ULoadScreenSaveGame* AAuraGameModeBase::RetrieveInGameSaveData()
+{
+	UAuraGameInstance* AuraGameInstance = Cast<UAuraGameInstance>(GetGameInstance());
+
+	const FString InGameLoadSlotName = AuraGameInstance->LoadSlotName;
+	const int32 InGameLoadSlotIndex = AuraGameInstance->LoadSlotIndex;
+
+	return GetSaveSlotData(InGameLoadSlotName, InGameLoadSlotIndex);
+}
+
+void AAuraGameModeBase::SaveInGameProgressData(ULoadScreenSaveGame* SaveObject)
+{
+	UAuraGameInstance* AuraGameInstance = Cast<UAuraGameInstance>(GetGameInstance());
+
+	const FString InGameLoadSlotName = AuraGameInstance->LoadSlotName;
+	const int32 InGameLoadSlotIndex = AuraGameInstance->LoadSlotIndex;
+	AuraGameInstance->PlayerStartTag = SaveObject->PlayerStartTag;
+
+	UGameplayStatics::SaveGameToSlot(SaveObject, InGameLoadSlotName, InGameLoadSlotIndex);
+	
+}
+
 void AAuraGameModeBase::TravelToMap(UMVVM_LoadSlot* Slot)
 {
 	const FString SlotName = Slot->LoadSlotName;
@@ -60,10 +82,9 @@ void AAuraGameModeBase::TravelToMap(UMVVM_LoadSlot* Slot)
 AActor* AAuraGameModeBase::ChoosePlayerStart_Implementation(AController* Player)
 {
 	UAuraGameInstance* AuraGameInstance = Cast<UAuraGameInstance>(GetGameInstance());
-	
-	
+
 	TArray<AActor*> Actors;
-	 UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), Actors);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), Actors);
 	if(Actors.Num() > 0)
 	{
 		AActor* SelectedActor = Actors[0];
