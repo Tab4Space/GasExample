@@ -13,7 +13,7 @@ class UNiagaraSystem;
 class UDamageTextComponent;
 class UInputMappingContext;
 class UInputAction;
-class IEnemyInterface;
+class IHighlightInterface;
 class UAuraInputConfig;
 class UAuraAbilitySystemComponent;
 class USplineComponent;
@@ -61,8 +61,8 @@ private:
 	bool bShiftKeyDown = false;
 
 	void CursorTrace();
-	IEnemyInterface* LastActor;
-	IEnemyInterface* ThisActor;
+	IHighlightInterface* LastActor;
+	IHighlightInterface* ThisActor;
 	FHitResult CursorHit;
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);

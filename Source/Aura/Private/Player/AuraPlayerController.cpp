@@ -17,6 +17,7 @@
 #include "Aura/Aura.h"
 #include "Components/DecalComponent.h"
 #include "GameFramework/Character.h"
+#include "Interaction/HighlightInterface.h"
 #include "UI/Widget/DamageTextComponent.h"
 
 AAuraPlayerController::AAuraPlayerController()
@@ -121,7 +122,7 @@ void AAuraPlayerController::CursorTrace()
 	if(!CursorHit.bBlockingHit) return;
 
 	LastActor = ThisActor;
-	ThisActor = Cast<IEnemyInterface>(CursorHit.GetActor());
+	ThisActor = Cast<IHighlightInterface>(CursorHit.GetActor());
 
 	if(LastActor != ThisActor)
 	{
